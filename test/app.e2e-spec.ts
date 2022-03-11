@@ -1,24 +1,40 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { INestApplication } from '@nestjs/common';
-import * as request from 'supertest';
+import * as pactum from 'pactum'
 import { AppModule } from './../src/app.module';
+import { PrismaService } from '../src/prisma/prisma.service';
 
 describe('AppController (e2e)', () => {
   let app: INestApplication;
 
-  beforeEach(async () => {
+  beforeAll(async () => {
     const moduleFixture: TestingModule = await Test.createTestingModule({
       imports: [AppModule],
     }).compile();
 
     app = moduleFixture.createNestApplication();
     await app.init();
+
+    const prisma = app.get(PrismaService);
+    await prisma.cleanDb();
+    pactum.request.setBaseUrl('http://localhost:3000');
   });
 
-  it('/ (GET)', () => {
-    return request(app.getHttpServer())
-      .get('/')
-      .expect(200)
-      .expect('Hello World!');
+  afterAll(() => {
+    app.close();
+  });
+
+  it.todo('It should pass');
+
+  describe('Auth', () => {
+    
+    describe('signup', () => {
+      it('should signup', () => {
+        return pactum
+        .spec()
+        .post('/auth/signup')
+        .expectBodyContains('sign up');
+      })
+    });
   });
 });

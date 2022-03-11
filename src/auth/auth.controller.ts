@@ -4,6 +4,6 @@ import { Controller, Post } from '@nestjs/common';
 export class AuthController {
     @Post('signup')
     signup(){
-        return "sigin up"
+        return "sign up";
     }
 }
