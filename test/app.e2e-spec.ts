@@ -67,10 +67,10 @@ describe('AppController (e2e)', () => {
       
       it('should check if email is unique', () => {
         return pactum
-        .spec()
-        .post('/auth/signup')
-        .withBody(dto)
-        .expectStatus(403);
+          .spec()
+          .post('/auth/signup')
+          .withBody(dto)
+          .expectStatus(403);
       });
     });
   });
