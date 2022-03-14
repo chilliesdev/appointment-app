@@ -108,19 +108,32 @@ describe('AppController (e2e)', () => {
           password: "password1"
         }).inspect()
         .expectBodyContains('message')
-        .expectStatus(403);
+        .expectStatus(403)
       });
 
-      it('should signup', () => {
+      it('should signin', () => {
         return pactum
         .spec()
         .post('/auth/signin')
         .withBody(dto)
         .expectStatus(201)
-        .expectBodyContains('access_token');
+        .expectBodyContains('access_token')
+        .stores('userAt', 'access_token');
       });
 
     });
 
   });
+  
+  describe('User', () => {
+    it('should get user', () => {
+      return pactum
+      .spec()
+      .get('/user')
+      .withHeaders({
+        Authorization: 'Bearer $S{userAt}'
+      })
+      .expectStatus(201).inspect();
+    })
+  })
 });
