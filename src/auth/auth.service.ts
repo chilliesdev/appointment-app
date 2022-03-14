@@ -5,7 +5,7 @@ import { PrismaClientKnownRequestError, PrismaClientUnknownRequestError } from '
 import * as argon from 'argon2'
 import { PrismaService } from '../prisma/prisma.service';
 
-import { SignupDto } from './dto';
+import { SigninDto, SignupDto } from './dto';
 
 @Injectable()
 export class AuthService {
@@ -40,6 +40,24 @@ export class AuthService {
             throw error;
         }
 
+    }
+
+    async signin(dto: SigninDto){
+        const user = await this.prisma.user.findUnique({
+            where: {
+                email: dto.email
+            }
+        });
+
+        console.log(user);
+
+        if(!user) throw new ForbiddenException('Credentials Incorrect');
+
+        const pwMatches = await argon.verify(user.hash, dto.password);
+
+        if(!pwMatches) throw new ForbiddenException('Credentials Incorrect');
+
+        return this.signToken(user.id, user.email);
     }
 
     private async signToken(userId: number, email: string): Promise<{access_token: string}> {

@@ -3,7 +3,7 @@ import { INestApplication } from '@nestjs/common';
 import * as pactum from 'pactum'
 import { AppModule } from './../src/app.module';
 import { PrismaService } from '../src/prisma/prisma.service';
-import { SignupDto } from '../src/auth/dto';
+import { SigninDto, SignupDto } from '../src/auth/dto';
 
 describe('AppController (e2e)', () => {
   let app: INestApplication;
@@ -73,5 +73,54 @@ describe('AppController (e2e)', () => {
           .expectStatus(403);
       });
     });
+
+    describe('signin', () => {
+      const dto: SigninDto = {
+        email: 'email@email.com',
+        password: "password"
+      }
+
+      it('should check if field is empty', () => {
+        return pactum
+        .spec()
+        .post('/auth/signin')
+        .expectStatus(400);
+      });
+      
+      it('should check if email is incorrect', () => {
+        return pactum
+        .spec()
+        .post('/auth/signin')
+        .withBody({
+          email: "email1@email.com",
+          password: "password"
+        })
+        .expectBodyContains('message')
+        .expectStatus(403);
+      });
+      
+      it('should check if email is incorrect', () => {
+        return pactum
+        .spec()
+        .post('/auth/signin')
+        .withBody({
+          email: "email@email.com",
+          password: "password1"
+        }).inspect()
+        .expectBodyContains('message')
+        .expectStatus(403);
+      });
+
+      it('should signup', () => {
+        return pactum
+        .spec()
+        .post('/auth/signin')
+        .withBody(dto)
+        .expectStatus(201)
+        .expectBodyContains('access_token');
+      });
+
+    });
+
   });
 });
