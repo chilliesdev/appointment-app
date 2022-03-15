@@ -1,4 +1,5 @@
-import { Body, Controller, Post } from '@nestjs/common';
+import { Body, Controller, Get, Post, Req, UseGuards } from '@nestjs/common';
+import { AuthGuard } from '@nestjs/passport';
 import { AuthService } from './auth.service';
 import { SigninDto, SignupDto } from './dto';
 
@@ -13,5 +14,15 @@ export class AuthController {
     @Post('signin')
     signin(@Body()dto: SigninDto){
         return this.authService.signin(dto);
+    }
+
+    @Get('google')
+    @UseGuards(AuthGuard('google'))
+    googleAuth(@Req() req) {}
+
+    @Get('/google/redirect')
+    @UseGuards(AuthGuard('google'))
+    googleAuthRedirect(@Req() req){
+        return this.authService.googleSigin(req);
     }
 }

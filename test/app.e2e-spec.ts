@@ -106,7 +106,7 @@ describe('AppController (e2e)', () => {
         .withBody({
           email: "email@email.com",
           password: "password1"
-        }).inspect()
+        })
         .expectBodyContains('message')
         .expectStatus(403)
       });
@@ -133,7 +133,20 @@ describe('AppController (e2e)', () => {
       .withHeaders({
         Authorization: 'Bearer $S{userAt}'
       })
-      .expectStatus(201).inspect();
-    })
-  })
+      .expectStatus(200);
+    });
+
+    describe('Edit User', () => {
+      it('should check if empty fields', () => {
+        return pactum
+        .spec()
+        .patch('/user')
+        .withHeaders({
+          Authorization: 'Bearer $S{userAt}'
+        })
+        .expectStatus(400)
+        .inspect();
+      });
+    });
+  });
 });
