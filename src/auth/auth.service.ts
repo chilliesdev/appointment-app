@@ -7,6 +7,7 @@ import { PrismaService } from '../prisma/prisma.service';
 import passport from 'passport';
 
 import { SigninDto, SignupDto } from './dto';
+import { GoogleDto } from './dto/google.dto';
 
 @Injectable()
 export class AuthService {
@@ -30,7 +31,7 @@ export class AuthService {
 
             delete user.hash;
     
-            return this.signToken(user.id, user.email);
+            return this.signToken(user.id, user.email, user.name);
         } catch(error) {
             if(error instanceof PrismaClientKnownRequestError){
                 if(error.code === "P2002"){
@@ -58,22 +59,60 @@ export class AuthService {
 
         if(!pwMatches) throw new ForbiddenException('Credentials Incorrect');
 
-        return this.signToken(user.id, user.email);
+        return this.signToken(user.id, user.email, user.name);
     }
 
-    googleSigin(req){
-        if (!req.user) return 'No user from google';
+    async googleSigin(googleUser: GoogleDto){
+        const { id, email, name, issuer } = googleUser;
 
-        return{
-            message: 'User information form google',
-            user: req.user
+        if (!googleUser) 
+            throw new ForbiddenException('No user from google');
+
+        const credentials = await this.prisma.federatedCredential.findFirst({
+            where: {
+                provider: issuer,
+                subject: id
+            }
+        });
+
+        const hash = await argon.hash(this.config.get("DEFAULT_PASSWORD"));
+
+        if (!credentials) { 
+            const user = await this.prisma.user.create({
+                data: {
+                    name,
+                    email,
+                    hash 
+                }
+            });
+
+            await this.prisma.federatedCredential.create({
+                data: {
+                    provider: issuer,
+                    subject: id,
+                    userId: user.id
+                }
+            });
+
+            return user;
         }
+
+        const user = await this.prisma.user.findFirst({
+            where: {
+               id: credentials.userId 
+            }
+        });
+
+        return user;
+
+        // return this.signToken(id, email, name);
     }
 
-    private async signToken(userId: number, email: string): Promise<{access_token: string}> {
+    private async signToken(userId: number | string, email: string, name: string): Promise<{access_token: string}> {
         const payload = {
             sub: userId,
-            email
+            email,
+            name
         };
 
         const secret = this.config.get("JWT_SECRET");

@@ -20,6 +20,20 @@ model User {
   hash  String
 
   appointment Appointment[]
+  federatedCredential FederatedCredential[]
+}
+
+// To External logins
+model FederatedCredential {
+  id Int @id @default(autoincrement())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  provider String
+  subject String
+
+  userId Int
+  user User @relation(fields: [userId], references: [id])
 }
 
 model Appointment {
