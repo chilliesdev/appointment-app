@@ -151,7 +151,7 @@ describe('AppController (e2e)', () => {
           Authorization: 'Bearer $S{userAt}'
         })
         .withBody(dto)
-        .expectStatus(200)
+        .expectStatus(400)
         .inspect();
       });
     });
