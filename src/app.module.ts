@@ -5,6 +5,7 @@ import { GoogleStrategy } from './auth/strategy/google.strategy';
 import { PrismaModule } from './prisma/prisma.module';
 import { UserController } from './user/user.controller';
 import { UserService } from './user/user.service';
+import { AppointmentModule } from './appointment/appointment.module';
 
 @Module({
   imports: [
@@ -12,7 +13,7 @@ import { UserService } from './user/user.service';
       isGlobal: true
     }), 
     AuthModule, 
-    PrismaModule
+    PrismaModule, AppointmentModule
   ],
   controllers: [UserController],
   providers: [UserService, GoogleStrategy]

@@ -11,5 +11,7 @@ export class editUser {
 
     @IsOptional()
     @IsString()
+    password?: string;
+
     hash?: string;
 }

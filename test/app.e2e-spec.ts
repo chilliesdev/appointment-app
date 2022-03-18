@@ -4,6 +4,7 @@ import * as pactum from 'pactum'
 import { AppModule } from './../src/app.module';
 import { PrismaService } from '../src/prisma/prisma.service';
 import { SigninDto, SignupDto } from '../src/auth/dto';
+import { editUser } from '../src/user/dto/editUser.dto';
 
 describe('AppController (e2e)', () => {
   let app: INestApplication;
@@ -137,14 +138,20 @@ describe('AppController (e2e)', () => {
     });
 
     describe('Edit User', () => {
-      it('should check if empty fields', () => {
+      const dto: editUser = {
+        email: 'email1@email.com',
+        password: 'password1'
+      }
+
+      it('should update user', () => {
         return pactum
         .spec()
         .patch('/user')
         .withHeaders({
           Authorization: 'Bearer $S{userAt}'
         })
-        .expectStatus(400)
+        .withBody(dto)
+        .expectStatus(200)
         .inspect();
       });
     });
