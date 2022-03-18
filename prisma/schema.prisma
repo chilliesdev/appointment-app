@@ -19,7 +19,8 @@ model User {
   name String
   hash  String
 
-  appointment Appointment[]
+  host Appointment[] @relation(name: "hostId")
+  guest Appointment[] @relation(name: "guestId")
   federatedCredential FederatedCredential[]
 }
 
@@ -42,8 +43,11 @@ model Appointment {
   updatedAt DateTime @updatedAt
 
   date DateTime
-  description String
+  description String?
 
-  userId Int
-  user User @relation(fields: [userId], references: [id])
+  hostId Int
+  host User @relation(fields: [hostId], references: [id], name: "hostId")
+
+  guestId Int
+  guest User @relation(fields: [guestId], references: [id], name: "guestId")
 }

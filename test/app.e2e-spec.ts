@@ -5,6 +5,7 @@ import { AppModule } from './../src/app.module';
 import { PrismaService } from '../src/prisma/prisma.service';
 import { SigninDto, SignupDto } from '../src/auth/dto';
 import { editUser } from '../src/user/dto/editUser.dto';
+import { CreateAppointmentDto, EditAppointmentDto } from '../src/appointment/dto';
 
 describe('AppController (e2e)', () => {
   let app: INestApplication;
@@ -151,9 +152,123 @@ describe('AppController (e2e)', () => {
           Authorization: 'Bearer $S{userAt}'
         })
         .withBody(dto)
-        .expectStatus(400)
+        .expectStatus(200)
         .inspect();
       });
     });
+  });
+  
+  describe('Appointments', () => {
+    let date = new Date('19 March 2022 14:00 UTC');
+
+    describe('Create appointments', () => {
+      const dto: SignupDto = {
+        email: "email2@email.com",
+        name: "user2",
+        password: "password"
+      }
+  
+      it('should signup new user(User 2)', () => {
+        return pactum
+        .spec()
+        .post('/auth/signup')
+        .withBody(dto)
+        .expectStatus(201)
+        .stores('userAt2', 'access_token');
+      });
+  
+      it('should get user(User 2)', () => {
+        return pactum
+        .spec()
+        .get('/user')
+        .withHeaders({
+          Authorization: 'Bearer $S{userAt2}'
+        })
+        .expectStatus(200)
+        .stores('userId2', 'id');
+      });
+    });
+
+    describe('Create appointments', () => {
+      interface CreateAppointmentDtoTest extends Omit<CreateAppointmentDto, "guestId">  {
+        guestId: string;
+      }
+
+      const dto: CreateAppointmentDtoTest = {
+        date: date.toISOString(),
+        description: 'Test Appointment',
+        guestId: '$S{userId2}'
+      }
+
+      it('should create appointment', () => {
+        return pactum
+        .spec()
+        .post('/appointment')
+        .withHeaders({
+          Authorization: 'Bearer $S{userAt}'
+        })
+        .withBody(dto)
+        .expectStatus(201)
+        .stores('appointmentId','id')
+      });
+    });
+    
+    describe('Edit appointment', () => {
+      interface EditAppointmentDtoTest extends Omit<EditAppointmentDto, "guestId">  {
+        guestId: string;
+      }
+
+      const dto: EditAppointmentDtoTest = {
+        date: date.toISOString(),
+        description: 'Test Appointment',
+        guestId: '$S{userId2}'
+      }
+
+      it('should update appointment', () => {
+        return pactum
+        .spec()
+        .patch('/appointment/$S{appointmentId}')
+        .withHeaders({
+          Authorization: 'Bearer $S{userAt}'
+        })
+        .withBody(dto)
+        .expectStatus(200);
+      });
+    });
+
+    describe('Get Appointment', () => {
+      it('should get all appointments', () => {
+        return pactum
+        .spec()
+        .get('/appointment')
+        .withHeaders({
+          Authorization: 'Bearer $S{userAt}'
+        })
+        .expectStatus(200);
+      });
+     
+      it('should get appointment by id', () => {
+        return pactum
+        .spec()
+        .get('/appointment/$S{appointmentId}')
+        .withHeaders({
+          Authorization: 'Bearer $S{userAt}'
+        })
+        .expectStatus(200)
+      });
+    });
+
+    describe('Delete Appointment', () => { 
+      it('should delete appointment by id', () => {
+        return pactum
+        .spec()
+        .delete('/appointment/$S{appointmentId}')
+        .withHeaders({
+          Authorization: 'Bearer $S{userAt}'
+        })
+        .expectStatus(200)
+        .inspect();
+      })
+     });
   });
 });
