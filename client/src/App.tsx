@@ -1,5 +1,12 @@
+import { Signin, Signup } from './auth/views';
+
 function App() {
-  return <div>Hello World</div>;
+  return (
+    <div>
+      <Signup />
+      <Signin />
+    </div>
+  );
 }
 
 export default App;

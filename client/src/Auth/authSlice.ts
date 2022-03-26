@@ -1,5 +1,7 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { RootState } from '../store';
+import { SigninInput } from './types';
+import { SignupInput } from './types';
 
 interface AuthState {
   value: string;
@@ -13,13 +15,17 @@ export const authSlice = createSlice({
   name: 'auth',
   initialState,
   reducers: {
-    login: (state) => {},
-    signup: (state) => {},
+    signin: (state, action: PayloadAction<SigninInput>) => {
+      console.log(action.payload);
+    },
+    signup: (state, action: PayloadAction<SignupInput>) => {
+      console.log(action.payload);
+    },
     logout: (state) => {},
   },
 });
 
-export const { login, signup, logout } = authSlice.actions;
+export const { signin, signup, logout } = authSlice.actions;
 
 export const selectAccessToken = (state: RootState) => state.accessToken.value;
 
