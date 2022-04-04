@@ -1,4 +1,5 @@
-export type SigninInput = {
+export interface SigninInput {
   email: string;
   password: string;
-};
+  rememberMe: boolean;
+}
