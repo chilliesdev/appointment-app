@@ -20,16 +20,21 @@ function App() {
               </RequireAuth>
             }
           />
-          {AppRoutes.map(
-            (route) =>
-              !route.protectedRoute && (
-                <Route
-                  key={route.path}
-                  path={route.path}
-                  element={<route.component />}
-                />
-              )
-          )}
+          {AppRoutes.map((route) => (
+            <Route
+              key={route.path}
+              path={route.path}
+              element={
+                route.protectedRoute ? (
+                  <RequireAuth>
+                    <route.component />
+                  </RequireAuth>
+                ) : (
+                  <route.component />
+                )
+              }
+            />
+          ))}
         </Route>
       </Routes>
     </Router>

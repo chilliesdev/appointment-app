@@ -17,7 +17,8 @@ export default function RootContainer() {
     <>
       <ul>
         <li>
-          <Link to="/">Protected Page</Link>
+          <Link to="/">Home</Link>
+          <Link to="/profile">Profile</Link>
         </li>
       </ul>
       {!accessToken ? (
