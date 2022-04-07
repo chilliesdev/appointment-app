@@ -26,7 +26,11 @@ export const authSlice = createSlice({
   name: "auth",
   initialState,
   reducers: {
-    logout: (state) => {},
+    logout: (state) => {
+      state.accessToken = null;
+      localStorage.removeItem("accessToken");
+      sessionStorage.removeItem("accessToken");
+    },
   },
   extraReducers: (builder) => {
     signUp(builder);
@@ -65,13 +69,20 @@ const signIn = (builder: ActionReducerMapBuilder<AuthState>) => {
   });
 };
 
+interface formArgs {
+  email: string;
+  password: string;
+  rememberMe?: boolean;
+  name?: string;
+}
+
 function processAccessToken(
   state: WritableDraft<AuthState>,
   action: PayloadAction<
     any,
     string,
     {
-      arg: SigninInput | SignupInput;
+      arg: formArgs;
       requestId: string;
       requestStatus: "fulfilled";
     },
@@ -91,22 +102,12 @@ function processAccessToken(
       state.accessToken = access_token;
       state.message = undefined;
 
-      // action.meta.arg?.rememberMe
-      //   ? localStorage.setItem("accessToken", access_token)
-      //   : sessionStorage.setItem("accessToken", access_token);
+      action.meta.arg?.rememberMe
+        ? localStorage.setItem("accessToken", access_token)
+        : sessionStorage.setItem("accessToken", access_token);
 
-      if (instaceOfSigninInput(action.meta.arg)) {
-        if (action.meta.arg?.rememberMe)
-          localStorage.setItem("accessToken", access_token);
-        else sessionStorage.setItem("accessToken", access_token);
-      }
       break;
   }
-}
-
-function instaceOfSigninInput(object: any): object is SigninInput {
-  // To check if it is an instance of SigninInput
-  return object.rememberMe === Boolean;
 }
 
 export const { logout } = authSlice.actions;

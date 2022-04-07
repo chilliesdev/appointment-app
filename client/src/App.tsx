@@ -1,20 +1,36 @@
-import { BrowserRouter as Router, Link, Route, Routes } from 'react-router-dom';
-import { Signin, Signup } from './auth/views';
+import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+import { RequireAuth } from "./auth/views";
+import { RootContainer } from "./container";
+import AppRoutes from "./routes";
+
+function Home() {
+  return <h3>Home</h3>;
+}
 
 function App() {
   return (
     <Router>
-      <ul>
-        <li>
-          <Link to="/signup">Signup Page</Link>
-        </li>
-        <li>
-          <Link to="/signin">Signin Page</Link>
-        </li>
-      </ul>
       <Routes>
-        <Route path="/signup" element={<Signup />} />
-        <Route path="/signin" element={<Signin />} />
+        <Route element={<RootContainer />}>
+          <Route
+            path="/"
+            element={
+              <RequireAuth>
+                <Home />
+              </RequireAuth>
+            }
+          />
+          {AppRoutes.map(
+            (route) =>
+              !route.protectedRoute && (
+                <Route
+                  key={route.path}
+                  path={route.path}
+                  element={<route.component />}
+                />
+              )
+          )}
+        </Route>
       </Routes>
     </Router>
   );
