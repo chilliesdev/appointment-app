@@ -14,27 +14,14 @@ export default function RootContainer() {
   };
 
   return (
-    <>
-      <ul>
-        <li>
-          <Link to="/">Home</Link>
-          <Link to="/profile">Profile</Link>
-        </li>
-      </ul>
-      {!accessToken ? (
-        <>
-          <p>Please Login</p>
-          <Outlet />
-        </>
-      ) : (
-        <>
-          <p>
-            Welcome
-            <button onClick={logoutCurrentUser}>Sign Out</button>
-          </p>
-          <Outlet />
-        </>
-      )}
-    </>
+    <div
+      style={{
+        maxWidth: "400px",
+      }}
+      className="m-auto"
+    >
+      {accessToken && <button onClick={logoutCurrentUser}>Sign Out</button>}
+      <Outlet />
+    </div>
   );
 }

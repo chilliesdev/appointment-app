@@ -6,6 +6,7 @@ import { Button, ErrorMessage, Input } from "../../components";
 import { fetchSignIn } from "../../hooks/useFetchFromServer";
 import { useAppSelector } from "../../redux/hooks";
 import { SigninInput } from "../types";
+import Wrapper from "./Wrapper";
 
 type LocationState = {
   from: {
@@ -51,40 +52,47 @@ export default function Signin() {
   };
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)}>
-      <Input
-        label="Email"
-        {...register("email", {
-          required: true,
-          maxLength: 50,
-          pattern: {
-            value:
-              /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
-            message: "Please enter a valid email",
-          },
-        })}
-        id="email"
-        type="email"
-        placeholder="Your Email"
-        error={errors.email && errors.email.message}
-      />
-      <Input
-        label="Password"
-        {...register("password", { required: true })}
-        id="password"
-        type="password"
-        placeholder="Your Password"
-        error={errors.password && errors.password.message}
-      />
-      <Input
-        label="Remember Me"
-        type="checkbox"
-        labelAfter
-        {...register("rememberMe")}
-      />
+    <Wrapper>
+      <form onSubmit={handleSubmit(onSubmit)}>
+        <Input
+          label="Email"
+          {...register("email", {
+            required: true,
+            maxLength: 50,
+            pattern: {
+              value:
+                /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
+              message: "Please enter a valid email",
+            },
+          })}
+          id="email"
+          type="email"
+          placeholder="Your Email"
+          error={errors.email && errors.email.message}
+        />
+        {errors.email && (
+          <div style={{ color: "red" }}>{errors.email.message}</div>
+        )}
+        <Input
+          label="Password"
+          {...register("password", { required: true })}
+          id="password"
+          type="password"
+          placeholder="Your Password"
+          error={errors.password && errors.password.message}
+        />
+        <Input
+          label="Remember Me"
+          type="checkbox"
+          labelAfter
+          {...register("rememberMe")}
+        />
 
-      {serverErrorMessage && <ErrorMessage>{serverErrorMessage}</ErrorMessage>}
-      <Button type="submit">Sign In</Button>
-    </form>
+        {serverErrorMessage && (
+          <ErrorMessage>{serverErrorMessage}</ErrorMessage>
+        )}
+        <Button type="submit">Sign In</Button>
+      </form>
+    </Wrapper>
   );
 }
