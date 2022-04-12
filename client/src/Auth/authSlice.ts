@@ -6,7 +6,6 @@ import {
 import { WritableDraft } from "immer/dist/internal";
 import { fetchSignIn, fetchSignUp } from "../hooks/useFetchFromServer";
 import { RootState } from "../redux/store";
-import { SigninInput, SignupInput } from "./types";
 
 interface AuthState {
   accessToken: string | null;
@@ -102,7 +101,7 @@ function processAccessToken(
       state.accessToken = access_token;
       state.message = undefined;
 
-      action.meta.arg?.rememberMe
+      action.meta.arg.rememberMe
         ? localStorage.setItem("accessToken", access_token)
         : sessionStorage.setItem("accessToken", access_token);
 

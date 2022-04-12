@@ -2,8 +2,9 @@ import { useEffect } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { useDispatch } from "react-redux";
 import { useNavigate, useLocation } from "react-router-dom";
-import { Button, ErrorMessage, Input } from "../../components";
-import { fetchSignUp } from "../../hooks/useFetchFromServer";
+import { GoogleAuth } from ".";
+import { Button, CheckBox, ErrorMessage, Input } from "../../components";
+import { fetchSignUp } from "../../hooks";
 import { useAppSelector } from "../../redux/hooks";
 import { SignupInput } from "../types";
 import Wrapper from "./Wrapper";
@@ -45,10 +46,10 @@ export default function Signup() {
   };
 
   return (
-    <Wrapper>
+    <Wrapper type="signup">
       <form onSubmit={handleSubmit(onSubmit)}>
         <Input
-          label="Email"
+          label="Email*"
           {...register("email", {
             required: true,
             maxLength: 50,
@@ -64,7 +65,7 @@ export default function Signup() {
           error={errors.email && errors.email.message}
         />
         <Input
-          label="Full Name"
+          label="Full Name*"
           {...register("name", { required: true, maxLength: 50 })}
           id="name"
           type="text"
@@ -72,17 +73,23 @@ export default function Signup() {
           error={errors.name && errors.name.message}
         />
         <Input
-          label="Password"
+          label="Password*"
           {...register("password", { required: true })}
           id="password"
           type="password"
           placeholder="Your Password"
           error={errors.password && errors.password.message}
         />
+        <CheckBox
+          label="Remember Me"
+          type="checkbox"
+          {...register("rememberMe")}
+        />
         {serverErrorMessage && (
           <ErrorMessage>{serverErrorMessage}</ErrorMessage>
         )}
         <Button type="submit">Sign Up</Button>
+        <GoogleAuth />
       </form>
     </Wrapper>
   );

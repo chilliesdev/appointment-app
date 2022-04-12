@@ -1,9 +1,10 @@
 import { useEffect } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { useDispatch } from "react-redux";
-import { useLocation, useNavigate } from "react-router-dom";
-import { Button, ErrorMessage, Input } from "../../components";
-import { fetchSignIn } from "../../hooks/useFetchFromServer";
+import { Link, useLocation, useNavigate } from "react-router-dom";
+import { GoogleAuth } from ".";
+import { Button, CheckBox, ErrorMessage, Input } from "../../components";
+import { fetchSignIn } from "../../hooks";
 import { useAppSelector } from "../../redux/hooks";
 import { SigninInput } from "../types";
 import Wrapper from "./Wrapper";
@@ -52,7 +53,7 @@ export default function Signin() {
   };
 
   return (
-    <Wrapper>
+    <Wrapper type="signin">
       <form onSubmit={handleSubmit(onSubmit)}>
         <Input
           label="Email"
@@ -81,17 +82,22 @@ export default function Signin() {
           placeholder="Your Password"
           error={errors.password && errors.password.message}
         />
-        <Input
-          label="Remember Me"
-          type="checkbox"
-          labelAfter
-          {...register("rememberMe")}
-        />
+        <div className="flex justify-between">
+          <CheckBox
+            label="Remember Me"
+            type="checkbox"
+            {...register("rememberMe")}
+          />
+          <Link className="text-xs hover:underline text-primary" to="/">
+            Forgot Password?
+          </Link>
+        </div>
 
         {serverErrorMessage && (
           <ErrorMessage>{serverErrorMessage}</ErrorMessage>
         )}
         <Button type="submit">Sign In</Button>
+        <GoogleAuth />
       </form>
     </Wrapper>
   );
