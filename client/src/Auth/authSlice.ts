@@ -4,8 +4,13 @@ import {
   PayloadAction,
 } from "@reduxjs/toolkit";
 import { WritableDraft } from "immer/dist/internal";
-import { fetchSignIn, fetchSignUp } from "../hooks/useFetchFromServer";
+import {
+  fetchGoogleSignin,
+  fetchSignIn,
+  fetchSignUp,
+} from "../hooks/useFetchFromServer";
 import { RootState } from "../redux/store";
+import { GoogleSignin, SigninInput, SignupInput } from "./types";
 
 interface AuthState {
   accessToken: string | null;
@@ -34,8 +39,24 @@ export const authSlice = createSlice({
   extraReducers: (builder) => {
     signUp(builder);
     signIn(builder);
+    googleSignin(builder);
   },
 });
+
+const googleSignin = (builder: ActionReducerMapBuilder<AuthState>) => {
+  builder.addCase(fetchGoogleSignin.pending, (state) => {
+    state.loading = "pending";
+  });
+
+  builder.addCase(fetchGoogleSignin.fulfilled, (state, action) => {
+    processAccessToken(state, action);
+  });
+
+  builder.addCase(fetchGoogleSignin.rejected, (state, action) => {
+    state.loading = "failed";
+    if (action.payload) state.message = action.error.message;
+  });
+};
 
 const signUp = (builder: ActionReducerMapBuilder<AuthState>) => {
   builder.addCase(fetchSignUp.pending, (state) => {
@@ -68,20 +89,13 @@ const signIn = (builder: ActionReducerMapBuilder<AuthState>) => {
   });
 };
 
-interface formArgs {
-  email: string;
-  password: string;
-  rememberMe?: boolean;
-  name?: string;
-}
-
 function processAccessToken(
   state: WritableDraft<AuthState>,
   action: PayloadAction<
     any,
     string,
     {
-      arg: formArgs;
+      arg: SigninInput | SignupInput | GoogleSignin;
       requestId: string;
       requestStatus: "fulfilled";
     },
@@ -101,10 +115,11 @@ function processAccessToken(
       state.accessToken = access_token;
       state.message = undefined;
 
-      action.meta.arg.rememberMe
-        ? localStorage.setItem("accessToken", access_token)
-        : sessionStorage.setItem("accessToken", access_token);
-
+      if ("rememberMe" in action.meta.arg)
+        action.meta.arg.rememberMe
+          ? localStorage.setItem("accessToken", access_token)
+          : sessionStorage.setItem("accessToken", access_token);
+      else sessionStorage.setItem("accessToken", access_token);
       break;
   }
 }

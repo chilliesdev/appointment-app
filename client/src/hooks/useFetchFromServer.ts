@@ -1,5 +1,6 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import { SigninInput, SignupInput } from "../auth/types";
+import { GoogleSignin } from "../auth/types/GoogleSignin.type";
 
 export const fetchSignUp = createAsyncThunk(
   "auth/signUp",
@@ -15,7 +16,17 @@ export const fetchSignIn = createAsyncThunk(
   }
 );
 
-async function authPost(url: string, data: SigninInput | SignupInput) {
+export const fetchGoogleSignin = createAsyncThunk(
+  "auth/google",
+  async (data: GoogleSignin) => {
+    return await authPost("/auth/google", data);
+  }
+);
+
+async function authPost(
+  url: string,
+  data: SigninInput | SignupInput | GoogleSignin
+) {
   const serverUrl: string = process.env.REACT_APP_SERVER_URL!;
 
   let headers = new Headers();
