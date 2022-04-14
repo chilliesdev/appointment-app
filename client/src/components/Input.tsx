@@ -11,19 +11,21 @@ interface InputProps
 }
 
 function Input(
-  { label, error, ...rest }: InputProps,
+  { label, error, ...props }: InputProps,
   ref: React.LegacyRef<HTMLInputElement> | undefined
 ) {
   return (
     <div className="text-base font-medium mb-6">
-      <label className="block my-1">{label}</label>
+      <label htmlFor={props.name} className="block my-1">
+        {label}
+      </label>
       <input
         style={{
           width: "358px",
           height: "46px",
         }}
         className="px-3 py-2 border rounded-lg border-gray-200"
-        {...rest}
+        {...props}
         ref={ref}
       />
       {error && <ErrorMessage>{error}</ErrorMessage>}

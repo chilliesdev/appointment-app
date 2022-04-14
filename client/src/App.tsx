@@ -1,3 +1,4 @@
+// import "react-loader-spinner/dist/loader/";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import { RequireAuth } from "./auth/views";
 import { RootContainer } from "./container";

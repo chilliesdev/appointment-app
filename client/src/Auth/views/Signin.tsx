@@ -19,6 +19,7 @@ export default function Signin() {
   const dispatch = useDispatch();
   const serverErrorMessage = useAppSelector((state) => state.authState.message);
   const accessToken = useAppSelector((state) => state.authState.accessToken);
+  const loading = useAppSelector((state) => state.authState.loading);
 
   let navigate = useNavigate();
   let location = useLocation();
@@ -56,6 +57,7 @@ export default function Signin() {
     <Wrapper type="signin">
       <form onSubmit={handleSubmit(onSubmit)}>
         <Input
+          disabled={loading === "pending" ? true : false}
           label="Email"
           {...register("email", {
             required: true,
@@ -75,6 +77,7 @@ export default function Signin() {
           <div style={{ color: "red" }}>{errors.email.message}</div>
         )}
         <Input
+          disabled={loading === "pending" ? true : false}
           label="Password"
           {...register("password", { required: true })}
           id="password"
@@ -84,6 +87,7 @@ export default function Signin() {
         />
         <div className="flex justify-between">
           <CheckBox
+            disabled={loading === "pending" ? true : false}
             label="Remember Me"
             type="checkbox"
             {...register("rememberMe")}
@@ -96,7 +100,9 @@ export default function Signin() {
         {serverErrorMessage && (
           <ErrorMessage>{serverErrorMessage}</ErrorMessage>
         )}
-        <Button type="submit">Sign In</Button>
+        <Button loading={loading} type="submit">
+          Sign In
+        </Button>
         <GoogleAuth />
       </form>
     </Wrapper>

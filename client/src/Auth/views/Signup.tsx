@@ -19,6 +19,7 @@ export default function Signup() {
   const dispatch = useDispatch();
   const serverErrorMessage = useAppSelector((state) => state.authState.message);
   const accessToken = useAppSelector((state) => state.authState.accessToken);
+  const loading = useAppSelector((state) => state.authState.loading);
 
   let navigate = useNavigate();
   let location = useLocation();
@@ -49,6 +50,7 @@ export default function Signup() {
     <Wrapper type="signup">
       <form onSubmit={handleSubmit(onSubmit)}>
         <Input
+          disabled={loading === "pending" ? true : false}
           label="Email*"
           {...register("email", {
             required: true,
@@ -65,6 +67,7 @@ export default function Signup() {
           error={errors.email && errors.email.message}
         />
         <Input
+          disabled={loading === "pending" ? true : false}
           label="Full Name*"
           {...register("name", { required: true, maxLength: 50 })}
           id="name"
@@ -73,6 +76,7 @@ export default function Signup() {
           error={errors.name && errors.name.message}
         />
         <Input
+          disabled={loading === "pending" ? true : false}
           label="Password*"
           {...register("password", { required: true })}
           id="password"
@@ -81,6 +85,7 @@ export default function Signup() {
           error={errors.password && errors.password.message}
         />
         <CheckBox
+          disabled={loading === "pending" ? true : false}
           label="Remember Me"
           type="checkbox"
           {...register("rememberMe")}
@@ -88,7 +93,9 @@ export default function Signup() {
         {serverErrorMessage && (
           <ErrorMessage>{serverErrorMessage}</ErrorMessage>
         )}
-        <Button type="submit">Sign Up</Button>
+        <Button loading={loading} type="submit">
+          Sign Up
+        </Button>
         <GoogleAuth />
       </form>
     </Wrapper>

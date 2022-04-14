@@ -9,13 +9,21 @@ interface InputProps
 }
 
 function Input(
-  { label, ...rest }: InputProps,
+  { label, ...props }: InputProps,
   ref: React.LegacyRef<HTMLInputElement> | undefined
 ) {
   return (
     <div className="text-base font-medium flex align-middle">
-      <input type="checkbox" className="h-4 w-4 mr-2" {...rest} ref={ref} />
-      <label className="text-xs">{label}</label>
+      <input
+        type="checkbox"
+        className="h-4 w-4 mr-2"
+        {...props}
+        id={props.name}
+        ref={ref}
+      />
+      <label htmlFor={props.name} className="text-xs">
+        {label}
+      </label>
     </div>
   );
 }
