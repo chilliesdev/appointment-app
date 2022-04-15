@@ -1,6 +1,18 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import { SigninInput, SignupInput } from "../auth/types";
 import { GoogleSignin } from "../auth/types/GoogleSignin.type";
+import { useAppSelector } from "../redux/hooks";
+
+export const useGetUser = async (): Promise<{
+  email: string;
+  id: number;
+  name: string;
+}> => {
+  const accessToken = await useAppSelector(
+    (state) => state.authState.accessToken
+  );
+  return await secureGet("/user", accessToken);
+};
 
 export const fetchSignUp = createAsyncThunk(
   "auth/signUp",
@@ -22,6 +34,20 @@ export const fetchGoogleSignin = createAsyncThunk(
     return await authPost("/auth/google", data);
   }
 );
+
+async function secureGet(url: string, accessToken: string | null) {
+  const serverUrl: string = process.env.REACT_APP_SERVER_URL!;
+  let headers = new Headers();
+
+  headers.append("Authorization", `Bearer ${accessToken}`);
+
+  const response = await fetch(serverUrl + url, {
+    method: "get",
+    headers,
+  });
+
+  return response.json();
+}
 
 async function authPost(
   url: string,
