@@ -1,5 +1,4 @@
 import GoogleLogin, {
-  GoogleLoginProps,
   GoogleLoginResponse,
   GoogleLoginResponseOffline,
 } from "react-google-login";
