@@ -31,7 +31,7 @@ export default function Signup() {
     if (accessToken) {
       navigate("/", { replace: true });
     }
-  }, [accessToken]);
+  }, [accessToken, navigate]);
   const {
     handleSubmit,
     register,

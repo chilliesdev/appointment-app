@@ -1,18 +1,9 @@
-import { useDispatch } from "react-redux";
-import { useNavigate, Outlet } from "react-router-dom";
-import { logout } from "../auth/authSlice";
+import { Outlet } from "react-router-dom";
 import { NavBar } from "../components";
 import { useAppSelector } from "../redux/hooks";
 
 export default function RootContainer() {
-  const dispatch = useDispatch();
   const accessToken = useAppSelector((state) => state.authState.accessToken);
-  let navigate = useNavigate();
-
-  const logoutCurrentUser = () => {
-    navigate("/signin");
-    dispatch(logout());
-  };
 
   return (
     <div
@@ -21,8 +12,7 @@ export default function RootContainer() {
       }}
       className="mx-auto font-poppins text-gray-800"
     >
-      <NavBar />
-      {accessToken && <button onClick={logoutCurrentUser}>Sign Out</button>}
+      {accessToken && <NavBar />}
       <Outlet />
     </div>
   );
