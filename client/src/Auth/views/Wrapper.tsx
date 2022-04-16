@@ -11,10 +11,10 @@ export default function Wrapper({
   return (
     <div className="flex flex-col justify-center items-center">
       <Logo />
-      <h2 className="text-gray-900 font-bold text-3xl mb-4">
+      <h2 className="font-bold text-3xl mb-4">
         {type === "signin" ? "Sign in to your account" : "Join our community"}
       </h2>
-      <p className="text-gray-500 font-medium text-lg mb-6">
+      <p className="text-gray-500 dark:text-gray-100 font-medium text-lg mb-6">
         {type === "signin"
           ? "Start your demo version"
           : "Start your journey with our product"}

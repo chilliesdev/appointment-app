@@ -9,15 +9,12 @@ export default function ToogleTheme() {
 
   return (
     <button
+      className="text-2xl mr-1 dark:text-white"
       onClick={() => {
         dispatch(switchTheme());
       }}
     >
-      {theme === "dark" ? (
-        <BsSun className="text-2xl mr-1" />
-      ) : (
-        <BsMoon className="text-2xl mr-1" />
-      )}
+      {theme === "dark" ? <BsSun /> : <BsMoon />}
     </button>
   );
 }

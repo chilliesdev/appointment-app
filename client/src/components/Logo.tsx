@@ -9,7 +9,9 @@ export default function Logo({ full }: { full?: boolean }) {
         src={require("../images/logo.svg").default}
       />
       {full && (
-        <span className="text-black text-xs font-bold">Appointment</span>
+        <span className="text-black dark:text-white text-xs font-bold">
+          Appointment
+        </span>
       )}
     </Link>
   );

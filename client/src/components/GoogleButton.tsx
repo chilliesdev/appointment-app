@@ -7,7 +7,7 @@ export default function GoogleButton({
         width: "358px",
         height: "46px",
       }}
-      className="bg-white rounded-md border-gray-100 border flex justify-center items-center mb-6"
+      className="bg-white text-gray-900 rounded-md border-gray-100 border flex justify-center items-center mb-6"
       {...props}
     >
       <img

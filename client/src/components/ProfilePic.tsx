@@ -24,8 +24,8 @@ export default function ProfilePic(
   return (
     <img
       {...props}
-      className="h-9 w-9 border-2 border-black rounded-full"
-      alt="Profile Picture"
+      className="h-9 w-9 border-2 border-black dark:border-white rounded-full"
+      alt="Profile"
       src={
         !isLoading
           ? `https://ui-avatars.com/api/?name=${data}&background=22C55E&rounded=true`

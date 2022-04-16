@@ -10,7 +10,7 @@ export default function RootContainer() {
       style={{
         maxWidth: "400px",
       }}
-      className="mx-auto font-poppins text-gray-800"
+      className="mx-auto"
     >
       {accessToken && <NavBar />}
       <Outlet />

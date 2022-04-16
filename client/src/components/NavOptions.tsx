@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Link, LinkProps } from "react-router-dom";
+import { Link } from "react-router-dom";
 import ProfilePic from "./ProfilePic";
 
 interface NavLinkProps
@@ -16,7 +16,7 @@ function NavLink({ children, to, className, ...props }: NavLinkProps) {
     <li className={` ${className}`} {...props}>
       <Link
         to={to}
-        className="block w-28 h-7 p-1 m-1 rounded-sm hover:bg-secondary text-base"
+        className="block w-28 h-7 p-1 m-1 rounded-sm hover:bg-secondary dark:hover:bg-gray-500 text-base"
       >
         {children}
       </Link>

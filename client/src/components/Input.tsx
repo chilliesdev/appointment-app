@@ -24,7 +24,7 @@ function Input(
           width: "358px",
           height: "46px",
         }}
-        className="px-3 py-2 border rounded-lg border-gray-200"
+        className="px-3 py-2 border rounded-lg border-gray-200 text-gray-900"
         {...props}
         ref={ref}
       />

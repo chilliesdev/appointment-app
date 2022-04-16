@@ -19,21 +19,27 @@ const getTypedStorageItem = <T extends keyof ThemeState>(
 };
 
 function getInitialTheme(): ThemeState["theme"] {
+  const setAndReturnTheme = (theme: ThemeState["theme"]) => {
+    const root = window.document.documentElement;
+    root.classList.add(theme);
+    return theme;
+  };
+
   if (typeof window !== "undefined" && window.localStorage) {
     const storedPrefs = getTypedStorageItem("theme");
 
     if (typeof storedPrefs === "string") {
-      return storedPrefs;
+      return setAndReturnTheme(storedPrefs);
     }
 
     const userMedia = window.matchMedia("(prefers-color-scheme: dark)");
 
     if (userMedia.matches) {
-      return "dark";
+      return setAndReturnTheme("dark");
     }
   }
 
-  return "light";
+  return setAndReturnTheme("light");
 }
 
 const initialState: ThemeState = {
@@ -48,12 +54,19 @@ export const themeSlice = createSlice({
       const root = window.document.documentElement;
       const isDark = state.theme === "dark";
 
-      root.classList.remove(isDark ? "light" : "dark");
-      root.classList.add(state.theme);
+      if (isDark) {
+        root.classList.remove("dark");
+        root.classList.add("light");
+        state.theme = "light";
 
-      setTypedStorageItem("theme", state.theme);
+        setTypedStorageItem("theme", "light");
+      } else {
+        root.classList.remove("light");
+        root.classList.add("dark");
+        state.theme = "dark";
 
-      state.theme = isDark ? "light" : "dark";
+        setTypedStorageItem("theme", "dark");
+      }
     },
   },
 });
