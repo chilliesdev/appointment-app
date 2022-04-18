@@ -43,6 +43,8 @@ model Appointment {
   updatedAt DateTime @updatedAt
 
   date DateTime
+  duration Int
+  name String
   description String?
 
   hostId Int

@@ -1,19 +1,23 @@
-import { IsDateString, IsNumber, IsOptional, IsString } from "class-validator";
+import { IsDateString, IsNumber, IsOptional, IsString } from 'class-validator';
 
 export class EditAppointmentDto {
-    @IsOptional()
-    @IsDateString()
-    date: string;
+  @IsOptional()
+  @IsDateString()
+  date: string;
 
-    @IsOptional()
-    @IsString()
-    description?: string;
+  @IsOptional()
+  @IsString()
+  description?: string;
 
-    // @IsNotEmpty()
-    // @IsNumber()
-    // hostId: number;
+  @IsOptional()
+  @IsString()
+  name?: string;
 
-    @IsOptional()
-    @IsNumber()
-    guestId: number;
+  @IsOptional()
+  @IsNumber()
+  duration?: number;
+
+  @IsOptional()
+  @IsNumber()
+  guestId: number;
 }

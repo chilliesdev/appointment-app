@@ -156,7 +156,7 @@ describe('AppController (e2e)', () => {
   describe('Appointments', () => {
     let date = new Date('19 March 2022 14:00 UTC');
 
-    describe('Create appointments', () => {
+    describe('Signup another user', () => {
       const dto: SignupDto = {
         email: 'email2@email.com',
         name: 'user2',
@@ -192,6 +192,8 @@ describe('AppController (e2e)', () => {
 
       const dto: CreateAppointmentDtoTest = {
         date: date.toISOString(),
+        name: 'Test Appointment',
+        duration: 30,
         description: 'Test Appointment',
         guestId: '$S{userId2}',
       };
@@ -217,6 +219,8 @@ describe('AppController (e2e)', () => {
 
       const dto: EditAppointmentDtoTest = {
         date: date.toISOString(),
+        name: 'Test Appointment',
+        duration: 30,
         description: 'Test Appointment',
         guestId: '$S{userId2}',
       };
