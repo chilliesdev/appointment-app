@@ -1,5 +1,7 @@
-import { useState } from "react";
+import { useRef, useState } from "react";
+import { BsChevronDown } from "react-icons/bs";
 import { Link } from "react-router-dom";
+import useComponentVisible from "../hooks/useComponentVisible";
 import ProfilePic from "./ProfilePic";
 
 interface NavLinkProps
@@ -27,24 +29,29 @@ function NavLink({ children, to, className, ...props }: NavLinkProps) {
 export default function NavOptions() {
   const [links, setLinks] = useState(false);
 
+  const { ref, isComponentVisible } = useComponentVisible(false);
+
   return (
-    <div
-      onMouseEnter={() => setLinks(false)}
-      onMouseLeave={() => setLinks(true)}
-    >
-      <ProfilePic onClick={() => setLinks(!links)} />
-      <ol
-        className={`${
-          links ? "opacity-0" : "opacity-100"
-        } absolute top-10 transition-all border shadow-sm py-4 px-1 rounded-md`}
-        style={{ right: "calc((100vw - 400px)/2)" }}
+    <div ref={ref}>
+      <span
+        className="flex items-center"
+        // onClick={() => setIsComponentVisible(!isComponentVisible)}
       >
-        <NavLink className="border-b" to="/">
-          Home
-        </NavLink>
-        <NavLink to="/">Profile</NavLink>
-        <NavLink to="/signout">Sign Out</NavLink>
-      </ol>
+        <ProfilePic onClick={() => setLinks(!links)} />
+        <BsChevronDown className="ml-0.5" />
+      </span>
+      {isComponentVisible && (
+        <ol
+          className="absolute top-10 transition-all bg-white dark:bg-gray-900 border shadow-sm py-4 px-1 rounded-md z-10"
+          style={{ right: "calc((100vw - 400px)/2)" }}
+        >
+          <NavLink className="border-b" to="/">
+            Home
+          </NavLink>
+          <NavLink to="/profile">Profile</NavLink>
+          <NavLink to="/signout">Sign Out</NavLink>
+        </ol>
+      )}
     </div>
   );
 }

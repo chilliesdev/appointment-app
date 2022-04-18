@@ -1,14 +1,12 @@
 // import "react-loader-spinner/dist/loader/";
 import { QueryClient, QueryClientProvider } from "react-query";
+import { ReactQueryDevtools } from "react-query/devtools";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import { RequireAuth } from "./auth/views";
 import { RootContainer } from "./container";
+import { Home } from "./pages";
 import AppRoutes from "./routes";
 import AppTheme from "./theme/views/AppTheme";
-
-function Home() {
-  return <h3>Home</h3>;
-}
 
 const queryClient = new QueryClient();
 
@@ -45,6 +43,7 @@ function App() {
             </Route>
           </Routes>
         </Router>
+        <ReactQueryDevtools initialIsOpen={false} />
       </QueryClientProvider>
     </AppTheme>
   );

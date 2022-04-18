@@ -13,8 +13,8 @@ async function bootstrap() {
   app.enableCors();
 
   // Clear DB
-  const prisma = app.get(PrismaService);
-  await prisma.cleanDb();
+  // const prisma = app.get(PrismaService);
+  // await prisma.cleanDb();
 
   await app.listen(8000);
 }

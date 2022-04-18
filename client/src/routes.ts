@@ -1,4 +1,5 @@
 import { Signin, Signout, Signup } from "./auth/views";
+import { Profile } from "./pages";
 
 type RouteType = {
   path: string;
@@ -21,6 +22,11 @@ const Routes: RouteType = [
     path: "/signout",
     protectedRoute: true,
     component: Signout,
+  },
+  {
+    path: "/profile",
+    protectedRoute: true,
+    component: Profile,
   },
 ];
 

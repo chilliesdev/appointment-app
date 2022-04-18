@@ -23,7 +23,7 @@ describe('AppController (e2e)', () => {
 
     const prisma = app.get(PrismaService);
     await prisma.cleanDb();
-    pactum.request.setBaseUrl('http://localhost:5000');
+    pactum.request.setBaseUrl('http://localhost:8000');
   });
 
   afterAll(() => {
