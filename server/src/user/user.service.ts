@@ -28,4 +28,26 @@ export class UserService {
 
     return user;
   }
+
+  async filterUser(email: string, name: string) {
+    const user = await this.prisma.user.findMany({
+      where: {
+        email: {
+          contains: email,
+        },
+        OR: {
+          name: {
+            contains: name,
+          },
+        },
+      },
+      select: {
+        name: true,
+        email: true,
+        id: true,
+      },
+    });
+
+    return user;
+  }
 }

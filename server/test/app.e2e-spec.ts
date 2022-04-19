@@ -147,8 +147,56 @@ describe('AppController (e2e)', () => {
             Authorization: 'Bearer $S{userAt}',
           })
           .withBody(dto)
-          .expectStatus(200)
-          .inspect();
+          .expectStatus(200);
+      });
+    });
+
+    describe('Filter User', () => {
+      const expectedOutput = [
+        {
+          name: 'user1',
+          email: 'email1@email.com',
+        },
+      ];
+
+      it('should filter users by name and email', () => {
+        return pactum
+          .spec()
+          .get('/user/filter')
+          .withHeaders({
+            Authorization: 'Bearer $S{userAt}',
+          })
+          .withQueryParams({
+            email: 'email1@email.com',
+            name: 'user1',
+          })
+          .expectJsonLike(expectedOutput);
+      });
+
+      it('should filter users by email', () => {
+        return pactum
+          .spec()
+          .get('/user/filter')
+          .withHeaders({
+            Authorization: 'Bearer $S{userAt}',
+          })
+          .withQueryParams({
+            email: 'email1',
+          })
+          .expectJsonLike(expectedOutput);
+      });
+
+      it('should filter users by name', () => {
+        return pactum
+          .spec()
+          .get('/user/filter')
+          .withHeaders({
+            Authorization: 'Bearer $S{userAt}',
+          })
+          .withQueryParams({
+            name: 'use',
+          })
+          .expectJsonLike(expectedOutput);
       });
     });
   });
@@ -267,8 +315,7 @@ describe('AppController (e2e)', () => {
           .withHeaders({
             Authorization: 'Bearer $S{userAt}',
           })
-          .expectStatus(200)
-          .inspect();
+          .expectStatus(200);
       });
     });
   });
