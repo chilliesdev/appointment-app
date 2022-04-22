@@ -1,5 +1,21 @@
+import { SuggestionsDataType } from "../components/types";
 import { store } from "../redux/store";
 import { UserTypes } from "./types/User.type";
+
+export const useFilterUsers = async (data: {
+  name?: string;
+  email?: string;
+}): Promise<SuggestionsDataType> => {
+  const state = await store.getState();
+
+  const accessToken = state.authState.accessToken;
+
+  return secureFetch(
+    "GET",
+    "/user/filter/?" + new URLSearchParams(data),
+    accessToken
+  );
+};
 
 export const useEditUser = async (data: UserTypes): Promise<unknown> => {
   const state = await store.getState();

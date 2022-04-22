@@ -1,5 +1,5 @@
 import { Signin, Signout, Signup } from "./auth/views";
-import { Profile } from "./pages";
+import { Create, Profile } from "./pages";
 
 type RouteType = {
   path: string;
@@ -7,7 +7,7 @@ type RouteType = {
   component: () => JSX.Element;
 }[];
 
-const Routes: RouteType = [
+export const Routes: RouteType = [
   {
     path: "/signin",
     protectedRoute: false,
@@ -27,6 +27,11 @@ const Routes: RouteType = [
     path: "/profile",
     protectedRoute: true,
     component: Profile,
+  },
+  {
+    path: "/create",
+    protectedRoute: true,
+    component: Create,
   },
 ];
 

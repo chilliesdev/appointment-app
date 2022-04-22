@@ -8,6 +8,11 @@ import NavBar from "./NavBar";
 import ProfilePic from "./ProfilePic";
 import Theme from "../theme/views/ToogleTheme";
 import NavOptions from "./NavOptions";
+import Heading from "./Heading";
+import AutoCompleteInput from "./AutoCompleteInput";
+import RichTextInput from "./RichTextInput";
+import BasicDetails from "./BasicDetails";
+import CalendarForm from "./CalendarForm";
 
 export {
   ErrorMessage,
@@ -20,4 +25,9 @@ export {
   ProfilePic,
   Theme,
   NavOptions,
+  Heading,
+  AutoCompleteInput,
+  RichTextInput,
+  BasicDetails,
+  CalendarForm,
 };

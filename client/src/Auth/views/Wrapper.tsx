@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { Logo } from "../../components";
+import { Heading, Logo } from "../../components";
 
 export default function Wrapper({
   children,
@@ -11,9 +11,9 @@ export default function Wrapper({
   return (
     <div className="flex flex-col justify-center items-center">
       <Logo />
-      <h2 className="font-bold text-3xl mb-4">
+      <Heading>
         {type === "signin" ? "Sign in to your account" : "Join our community"}
-      </h2>
+      </Heading>
       <p className="text-gray-500 dark:text-gray-100 font-medium text-lg mb-6">
         {type === "signin"
           ? "Start your demo version"

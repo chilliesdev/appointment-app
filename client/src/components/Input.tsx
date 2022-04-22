@@ -1,18 +1,52 @@
 import React, { forwardRef } from "react";
 import ErrorMessage from "./ErrorMessage";
+import { InputProps, SuggestionsDataType } from "./types";
 
-interface InputProps
-  extends React.DetailedHTMLProps<
-    React.InputHTMLAttributes<HTMLInputElement>,
-    HTMLInputElement
-  > {
-  label: string;
-  error?: string | undefined;
+function Suggestions({
+  data,
+  onClickSuggestion,
+}: {
+  data: SuggestionsDataType | undefined;
+  onClickSuggestion?: (selected: string) => void;
+}) {
+  return (
+    <>
+      {data && data.length > 0 && (
+        <ol
+          style={{
+            width: "358px",
+            // height: "46px",
+          }}
+          className="absolute z-10 border rounded border-gray-800 bg-white dark:bg-gray-800 text-gray-800 dark:text-gray-800"
+        >
+          {data.map((data) => (
+            <li
+              onClick={() => {
+                if (onClickSuggestion) onClickSuggestion(data?.email || "");
+              }}
+              className="hover:bg-gray-300 hover:cursor-pointer p-2"
+              key={data?.id}
+            >
+              <h5 className="text-md">{data?.email}</h5>
+              <p className="text-xs font-bold">{data?.name}</p>
+            </li>
+          ))}
+        </ol>
+      )}
+    </>
+  );
 }
 
 function Input(
-  { label, error, ...props }: InputProps,
-  ref: React.LegacyRef<HTMLInputElement> | undefined
+  {
+    label,
+    error,
+    autoSuggestion,
+    autoSuggestionData,
+    onClickSuggestion,
+    ...props
+  }: InputProps,
+  ref: React.LegacyRef<HTMLInputElement> | undefined | string
 ) {
   return (
     <div className="text-base font-medium mb-6">
@@ -28,6 +62,12 @@ function Input(
         {...props}
         ref={ref}
       />
+      {autoSuggestion && (
+        <Suggestions
+          data={autoSuggestionData}
+          onClickSuggestion={onClickSuggestion}
+        />
+      )}
       {error && <ErrorMessage>{error}</ErrorMessage>}
     </div>
   );

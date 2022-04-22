@@ -3,7 +3,7 @@ import { SubmitHandler, useForm } from "react-hook-form";
 import { useMutation, useQuery, useQueryClient } from "react-query";
 import { toast, ToastContainer } from "react-toastify";
 import { SignupInput } from "../auth/types";
-import { Button, Input, ProfilePic } from "../components";
+import { Button, Heading, Input, ProfilePic } from "../components";
 import { useEditUser, useGetUser } from "../hooks";
 import { useAppSelector } from "../redux/hooks";
 
@@ -45,7 +45,6 @@ export default function Profile() {
         hideProgressBar: true,
         closeOnClick: true,
         pauseOnHover: true,
-        draggable: true,
         progress: undefined,
         theme: theme,
       });
@@ -68,7 +67,7 @@ export default function Profile() {
     <>
       <ToastContainer />
       <div className="flex flex-col items-center mt-4">
-        <h2 className="font-bold text-3xl mb-2">Edit Your Profile</h2>
+        <Heading>Edit Your Profile</Heading>
         <ProfilePic className="h-14 w-14" />
         <form onSubmit={handleSubmit(onSubmit)}>
           <Input
