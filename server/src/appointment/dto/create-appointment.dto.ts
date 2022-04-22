@@ -1,4 +1,5 @@
 import {
+  IsBoolean,
   IsDateString,
   IsNotEmpty,
   IsNumber,
@@ -8,24 +9,24 @@ import {
 
 export class CreateAppointmentDto {
   @IsNotEmpty()
+  @IsString()
+  title: string;
+
+  @IsNotEmpty()
   @IsDateString()
-  date: string;
+  start: string;
+
+  @IsNotEmpty()
+  @IsDateString()
+  end: string;
+
+  @IsNotEmpty()
+  @IsBoolean()
+  allDay: boolean;
 
   @IsOptional()
   @IsString()
   description?: string;
-
-  @IsNotEmpty()
-  @IsString()
-  name: string;
-
-  @IsNotEmpty()
-  @IsNumber()
-  duration: number;
-
-  // @IsNotEmpty()
-  // @IsNumber()
-  // hostId: number;
 
   @IsNotEmpty()
   @IsNumber()

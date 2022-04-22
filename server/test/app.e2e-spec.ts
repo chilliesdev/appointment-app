@@ -202,7 +202,8 @@ describe('AppController (e2e)', () => {
   });
 
   describe('Appointments', () => {
-    let date = new Date('19 March 2022 14:00 UTC');
+    let startDate = new Date('19 March 2022 14:00 UTC');
+    let endDate = new Date('19 March 2022 14:30 UTC');
 
     describe('Signup another user', () => {
       const dto: SignupDto = {
@@ -239,9 +240,10 @@ describe('AppController (e2e)', () => {
       }
 
       const dto: CreateAppointmentDtoTest = {
-        date: date.toISOString(),
-        name: 'Test Appointment',
-        duration: 30,
+        start: startDate.toISOString(),
+        end: endDate.toISOString(),
+        title: 'Test Appointment',
+        allDay: false,
         description: 'Test Appointment',
         guestId: '$S{userId2}',
       };
@@ -255,7 +257,8 @@ describe('AppController (e2e)', () => {
           })
           .withBody(dto)
           .expectStatus(201)
-          .stores('appointmentId', 'id');
+          .stores('appointmentId', 'id')
+          .inspect();
       });
     });
 
@@ -266,9 +269,10 @@ describe('AppController (e2e)', () => {
       }
 
       const dto: EditAppointmentDtoTest = {
-        date: date.toISOString(),
-        name: 'Test Appointment',
-        duration: 30,
+        start: startDate.toISOString(),
+        end: endDate.toISOString(),
+        title: 'Test Appointment',
+        allDay: false,
         description: 'Test Appointment',
         guestId: '$S{userId2}',
       };
