@@ -34,7 +34,7 @@ model FederatedCredential {
   subject String
 
   userId Int
-  user User @relation(fields: [userId], references: [id])
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
 
 model Appointment {
@@ -49,8 +49,8 @@ model Appointment {
   description String?
 
   hostId Int
-  host User @relation(fields: [hostId], references: [id], name: "hostId")
+  host User @relation(fields: [hostId], references: [id], name: "hostId", onDelete: Cascade)
 
   guestId Int
-  guest User @relation(fields: [guestId], references: [id], name: "guestId")
+  guest User @relation(fields: [guestId], references: [id], name: "guestId", onDelete: Cascade)
 }
