@@ -1,6 +1,5 @@
-import { Appointment, PrismaClient } from '@prisma/client';
-import { Mock, MockFactory } from 'mockingbird';
-
+import { Appointment } from '@prisma/client';
+import { Mock, MockFactory, Faker } from 'mockingbird';
 class AppointmentEntityMock
   implements
     Omit<Appointment, 'id' | 'createdAt' | 'updatedAt' | 'guestId' | 'hostId'>
