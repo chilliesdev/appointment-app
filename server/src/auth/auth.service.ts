@@ -4,7 +4,6 @@ import { JwtService } from '@nestjs/jwt';
 import { PrismaClientKnownRequestError } from '@prisma/client/runtime';
 import * as argon from 'argon2';
 import { PrismaService } from '../prisma/prisma.service';
-import passport from 'passport';
 
 import { SigninDto, SignupDto } from './dto';
 import { GoogleDto } from './dto/google.dto';

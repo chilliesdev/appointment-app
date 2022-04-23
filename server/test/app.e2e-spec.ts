@@ -202,8 +202,8 @@ describe('AppController (e2e)', () => {
   });
 
   describe('Appointments', () => {
-    let startDate = new Date('19 March 2022 14:00 UTC');
-    let endDate = new Date('19 March 2022 14:30 UTC');
+    let startDate = new Date('22 April 2022 14:00 UTC');
+    let endDate = new Date('22 April 2022 14:30 UTC');
 
     describe('Signup another user', () => {
       const dto: SignupDto = {
