@@ -5,7 +5,7 @@ interface RichTextInputProps {
   name: string;
   label: string;
   initialValue?: any;
-  value: string;
+  value: string | undefined;
   onChange: (...event: any[]) => void;
 }
 
@@ -13,6 +13,8 @@ function RichTextInput(
   { value, onChange, name, label, ...props }: RichTextInputProps,
   ref: React.LegacyRef<Editor> | undefined | undefined
 ) {
+  const apiKey: string = process.env.REACT_APP_API_KEY!;
+
   const handleOnChange = (editor: string) => onChange(editor);
 
   return (
@@ -21,6 +23,7 @@ function RichTextInput(
         {label}
       </label>
       <Editor
+        apiKey={apiKey}
         value={value}
         onEditorChange={handleOnChange}
         ref={ref}

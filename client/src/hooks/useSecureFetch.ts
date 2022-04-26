@@ -1,6 +1,23 @@
+import { Http2ServerRequest, Http2ServerResponse } from "http2";
 import { SuggestionsDataType } from "../components/types";
 import { store } from "../redux/store";
-import { UserTypes } from "./types/User.type";
+import { AppointmentTypes, UserTypes } from "./types/secureFetch.type";
+
+export const usePostAppointment = async (data: AppointmentTypes) => {
+  const state = await store.getState();
+
+  const accessToken = state.authState.accessToken;
+
+  return secureFetch("POST", "/appointment", accessToken, data);
+};
+
+export const useGetAppointment = async (): Promise<AppointmentTypes[]> => {
+  const state = await store.getState();
+
+  const accessToken = state.authState.accessToken;
+
+  return secureFetch("GET", "/appointment", accessToken);
+};
 
 export const useFilterUsers = async (data: {
   name?: string;
@@ -61,5 +78,6 @@ async function secureFetch(
     return await response.json();
   } catch (error) {
     console.error(error);
+    throw new Error("Server Error");
   }
 }

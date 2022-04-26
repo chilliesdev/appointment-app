@@ -2,9 +2,9 @@ import { forwardRef, useEffect, useState } from "react";
 import { UseFormReset, UseFormWatch } from "react-hook-form";
 import { useMutation } from "react-query";
 import { useFilterUsers } from "../hooks";
-import { CreateInputForm } from "../pages/types";
+import useComponentVisible from "../hooks/useComponentVisible";
 import Input from "./Input";
-import { InputProps, SuggestionsDataType } from "./types";
+import { CreateInputForm, InputProps, SuggestionsDataType } from "./types";
 
 interface AutoCompleteInputProps extends InputProps {
   changeFunc: UseFormWatch<CreateInputForm>;
@@ -21,19 +21,24 @@ function AutoCompleteInput(
   ref: React.Ref<HTMLInputElement> | undefined
 ) {
   const [users, setUsers] = useState<SuggestionsDataType | undefined>();
-  // const [show, setShow] = useState(true);
 
   const mutation = useMutation(useFilterUsers, {
     onSuccess: (data) => setUsers(data),
   });
 
-  function handleClickSuggestion(selected: string) {
-    console.log(selected);
+  function handleClickSuggestion(selected: string, selectedId: number) {
     resetField({
       guest: selected,
+      guestId: selectedId,
     });
 
     setUsers([]);
+  }
+
+  function handleBlur() {
+    setTimeout(() => {
+      setUsers([]);
+    }, 100);
   }
 
   useEffect(() => {
@@ -58,6 +63,7 @@ function AutoCompleteInput(
         autoSuggestion
         autoSuggestionData={users}
         onClickSuggestion={handleClickSuggestion}
+        // onBlur={handleBlur}
       />
     </div>
   );

@@ -1,7 +1,5 @@
 export interface CreateInputForm {
-  // date: string;
-  // duration: number;
-  name: string;
+  title: string;
   description: string;
   guest: string;
 }

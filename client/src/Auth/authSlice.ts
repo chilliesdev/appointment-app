@@ -12,8 +12,15 @@ import {
 import { RootState } from "../redux/store";
 import { GoogleSignin, SigninInput, SignupInput } from "./types";
 
+interface userType {
+  id: number;
+  email: string;
+  name: string;
+}
+
 interface AuthState {
   accessToken: string | null;
+  user: userType | undefined;
   loading: "idle" | "pending" | "succeeded" | "failed";
   message: string | undefined;
 }
@@ -22,6 +29,7 @@ const initialState: AuthState = {
   accessToken:
     localStorage.getItem("accessToken") ||
     sessionStorage.getItem("accessToken"),
+  user: undefined,
   loading: "idle",
   message: undefined,
 };
@@ -30,8 +38,12 @@ export const authSlice = createSlice({
   name: "auth",
   initialState,
   reducers: {
+    setUserData: (state, action: PayloadAction<userType>) => {
+      state.user = action.payload;
+    },
     logout: (state) => {
       state.accessToken = null;
+      state.user = undefined;
       localStorage.removeItem("accessToken");
       sessionStorage.removeItem("accessToken");
     },
@@ -114,6 +126,7 @@ function processAccessToken(
       state.loading = "succeeded";
       state.accessToken = access_token;
       state.message = undefined;
+      // state.user =
 
       if ("rememberMe" in action.meta.arg)
         action.meta.arg.rememberMe
@@ -124,7 +137,7 @@ function processAccessToken(
   }
 }
 
-export const { logout } = authSlice.actions;
+export const { logout, setUserData } = authSlice.actions;
 
 export const selectAccessToken = (state: RootState) => state.authState;
 

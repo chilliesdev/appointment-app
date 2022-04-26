@@ -1,6 +1,5 @@
-import { useEffect } from "react";
-import { useQuery } from "react-query";
-import { useGetUser } from "../hooks";
+import { useEffect, useState } from "react";
+import { useAppSelector } from "../redux/hooks";
 
 export default function ProfilePic(
   props: React.DetailedHTMLProps<
@@ -8,26 +7,12 @@ export default function ProfilePic(
     HTMLImageElement
   >
 ) {
-  const getUser = useGetUser();
-
-  const { data, isFetching, refetch, isLoading } = useQuery(
-    "picture",
-    async () => {
-      const response = await getUser;
-      const name = response.name;
-      return name.replace(/ /g, "+");
-    },
-    {
-      enabled: false,
-      refetchOnWindowFocus: false,
-      refetchOnMount: false,
-      refetchOnReconnect: false,
-    }
-  );
+  const user = useAppSelector((state) => state.authState.user);
+  const [fullName, setFullName] = useState("");
 
   useEffect(() => {
-    if (typeof data === "undefined") refetch();
-  }, [data]);
+    setFullName(user ? user?.name.replace(/ /g, "+") : "");
+  }, [user]);
 
   return (
     <img
@@ -35,8 +20,8 @@ export default function ProfilePic(
       className={`${props.className} h-9 w-9 border-2 border-black dark:border-white rounded-full`}
       alt="Profile"
       src={
-        !isLoading
-          ? `https://ui-avatars.com/api/?name=${data}&background=random&rounded=true`
+        user
+          ? `https://ui-avatars.com/api/?name=${fullName}&background=random&rounded=true`
           : ""
       }
     />

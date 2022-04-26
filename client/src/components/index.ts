@@ -13,6 +13,9 @@ import AutoCompleteInput from "./AutoCompleteInput";
 import RichTextInput from "./RichTextInput";
 import BasicDetails from "./BasicDetails";
 import CalendarForm from "./CalendarForm";
+import View from "./View";
+import SubHeading from "./SubHeading";
+import Text from "./Text";
 
 export {
   ErrorMessage,
@@ -30,4 +33,7 @@ export {
   RichTextInput,
   BasicDetails,
   CalendarForm,
+  View,
+  SubHeading,
+  Text,
 };

@@ -7,7 +7,7 @@ function Suggestions({
   onClickSuggestion,
 }: {
   data: SuggestionsDataType | undefined;
-  onClickSuggestion?: (selected: string) => void;
+  onClickSuggestion?: (selected: string, selectedId: number) => void;
 }) {
   return (
     <>
@@ -17,12 +17,13 @@ function Suggestions({
             width: "358px",
             // height: "46px",
           }}
-          className="absolute z-10 border rounded border-gray-800 bg-white dark:bg-gray-800 text-gray-800 dark:text-gray-800"
+          className="absolute z-10 shadow-sm shadow-gray-800 rounded border-gray-800 bg-white text-gray-800 dark:shadow-white"
         >
           {data.map((data) => (
             <li
               onClick={() => {
-                if (onClickSuggestion) onClickSuggestion(data?.email || "");
+                if (onClickSuggestion)
+                  onClickSuggestion(data?.email || "", data?.id || 0);
               }}
               className="hover:bg-gray-300 hover:cursor-pointer p-2"
               key={data?.id}

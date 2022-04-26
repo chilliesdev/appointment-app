@@ -6,5 +6,5 @@ export interface InputProps
   error?: string | undefined;
   autoSuggestion?: boolean;
   autoSuggestionData?: SuggestionsDataType;
-  onClickSuggestion?: (selected: string) => void;
+  onClickSuggestion?: (selected: string, selectedId: number) => void;
 }

@@ -1,6 +1,5 @@
 import { PrismaClient, User } from '@prisma/client';
 import * as argon from 'argon2';
-import { PrismaService } from '../src/prisma/prisma.service';
 import { multipleAppointments } from './entities/appointment.entity';
 import { multipleUsers } from './entities/user.entity';
 import { Faker } from 'mockingbird';
@@ -8,10 +7,11 @@ import { Faker } from 'mockingbird';
 const prisma = new PrismaClient();
 
 function returnRandomDate() {
-  return Faker.date.between(
-    '2022-04-23T00:00:00.000Z',
-    '2022-04-30T00:00:00.000Z',
-  );
+  const date = new Date();
+  const nextSevenDays = new Date(date.setDate(date.getDate() + 7));
+  const today = new Date(Date.now());
+
+  return Faker.date.between(today.toISOString(), nextSevenDays.toISOString());
 }
 
 async function main() {

@@ -1,4 +1,5 @@
 import { Outlet } from "react-router-dom";
+import { ToastContainer } from "react-toastify";
 import { NavBar } from "../components";
 import { useAppSelector } from "../redux/hooks";
 
@@ -13,6 +14,7 @@ export default function RootContainer() {
       className="mx-auto"
     >
       {accessToken && <NavBar />}
+      <ToastContainer />
       <Outlet />
     </div>
   );

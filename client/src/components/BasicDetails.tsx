@@ -1,22 +1,21 @@
+import { useEffect } from "react";
 import { useForm, Controller, SubmitHandler } from "react-hook-form";
 import { AutoCompleteInput, Button, Input, RichTextInput } from "../components";
-import { SetFormProps } from "./types";
+import { CreateInputForm, SetFormProps } from "./types";
 
-interface CreateInputForm {
-  // date: string;
-  // duration: number;
-  name: string;
-  description: string;
-  guest: string;
+interface CreateProps {
+  setCreateInfo: React.Dispatch<
+    React.SetStateAction<CreateInputForm | undefined>
+  >;
+  setForm: React.Dispatch<React.SetStateAction<SetFormProps["T"]>>;
+  createInfo: CreateInputForm | undefined;
 }
 
 export default function Create({
   setCreateInfo,
   setForm,
-}: {
-  setCreateInfo: (info: CreateInputForm) => void;
-  setForm: (formType: SetFormProps["T"]) => void;
-}) {
+  createInfo,
+}: CreateProps) {
   const {
     handleSubmit,
     watch,
@@ -26,23 +25,24 @@ export default function Create({
     formState: { errors },
   } = useForm<CreateInputForm>();
 
-  // const watchGuest = watch("guest");
-
   const onSubtmit: SubmitHandler<CreateInputForm> = (data) => {
     setCreateInfo(data);
     setForm("calendar");
-    console.log(data);
   };
+
+  useEffect(() => {
+    reset(createInfo);
+  }, [createInfo]);
 
   return (
     <form onSubmit={handleSubmit(onSubtmit)}>
       <Input
-        label="Name*"
+        label="Title*"
         type="text"
         placeholder="Appointment Name"
-        id="name"
-        error={errors.name && errors.name.message}
-        {...register("name", {
+        id="title"
+        error={errors.title && errors.title.message}
+        {...register("title", {
           required: true,
         })}
       />
@@ -50,10 +50,10 @@ export default function Create({
         changeFunc={watch}
         label="Guest Email*"
         type="text"
+        autoComplete="off"
         placeholder="Guest Email"
         id="guest"
         resetField={reset}
-        // watchedFieldData={watchGuest.guest}
         error={errors.guest && errors.guest.message}
         {...register("guest", {
           required: true,
@@ -66,7 +66,7 @@ export default function Create({
           <RichTextInput
             label="Description"
             name="description"
-            initialValue="<p>Add appointment descript</p>"
+            initialValue="<p>Describe your appointment</p>"
             onChange={onChange}
             value={value}
             ref={ref}

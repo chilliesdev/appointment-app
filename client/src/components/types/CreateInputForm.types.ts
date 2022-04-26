@@ -1,11 +1,13 @@
 export interface CreateInputForm {
-  date?: string;
-  duration?: number;
-  name?: string;
+  title?: string;
+  start?: string;
+  end?: string;
+  allDay?: boolean;
   description?: string;
   guest?: string;
+  guestId?: number;
 }
 
 export interface SetFormProps {
-  T: "basicDetails" | "calendar";
+  T: "basicDetails" | "calendar" | "complete";
 }
