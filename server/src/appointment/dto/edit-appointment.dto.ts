@@ -6,7 +6,7 @@ import {
   IsString,
 } from 'class-validator';
 
-export class EditAppointmentDto {
+export default class EditAppointmentDto {
   @IsOptional()
   @IsString()
   title?: string;

@@ -7,7 +7,7 @@ import {
   IsString,
 } from 'class-validator';
 
-export class CreateAppointmentDto {
+export default class CreateAppointmentDto {
   @IsNotEmpty()
   @IsString()
   title: string;

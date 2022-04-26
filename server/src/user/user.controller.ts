@@ -1,9 +1,9 @@
 import { Body, Controller, Get, Patch, Query, UseGuards } from '@nestjs/common';
 import { User } from '@prisma/client';
-import { GetUser } from '../auth/decorator';
-import { JwtGuard } from '../auth/guard';
-import { editUser } from './dto/editUser.dto';
-import { ParseStringPipe } from './pipes/parse-string.pipe';
+import GetUser from '../auth/decorator/get-user.decorator';
+import JwtGuard from '../auth/guard/jwt.guard';
+import editUser from './dto/editUser.dto';
+import ParseStringPipe from './pipes/parse-string.pipe';
 import { UserService } from './user.service';
 
 @Controller('user')

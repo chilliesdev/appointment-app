@@ -1,10 +1,14 @@
-import { ForbiddenException, Injectable } from '@nestjs/common';
-import { PrismaService } from '../prisma/prisma.service';
-import { CreateAppointmentDto, EditAppointmentDto } from './dto';
+import { ForbiddenException, Injectable, Logger } from '@nestjs/common';
+import { Cron, CronExpression } from '@nestjs/schedule';
+import PrismaService from '../prisma/prisma.service';
+import CreateAppointmentDto from './dto/create-appointment.dto';
+import EditAppointmentDto from './dto/edit-appointment.dto';
 
 @Injectable()
 export class AppointmentService {
   constructor(private prisma: PrismaService) {}
+
+  private readonly logger = new Logger(AppointmentService.name);
 
   getAppointment(userId: number) {
     return this.prisma.appointment.findMany({
@@ -73,5 +77,10 @@ export class AppointmentService {
         id: appointmentId,
       },
     });
+  }
+
+  @Cron(CronExpression.EVERY_30_SECONDS)
+  sendReminderEmail() {
+    this.logger.debug('Email Sent Every Second');
   }
 }

@@ -1,17 +1,17 @@
-import { IsEmail, IsOptional, IsString } from "class-validator";
+import { IsEmail, IsOptional, IsString } from 'class-validator';
 
-export class editUser {
-    @IsString()
-    @IsOptional()
-    name?: string;
-    
-    @IsEmail()
-    @IsOptional()
-    email?: string;
+export default class editUser {
+  @IsString()
+  @IsOptional()
+  name?: string;
 
-    @IsOptional()
-    @IsString()
-    password?: string;
+  @IsEmail()
+  @IsOptional()
+  email?: string;
 
-    hash?: string;
+  @IsOptional()
+  @IsString()
+  password?: string;
+
+  hash?: string;
 }

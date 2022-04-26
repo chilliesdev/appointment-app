@@ -2,7 +2,7 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { INestApplication } from '@nestjs/common';
 import * as pactum from 'pactum';
 import { AppModule } from './../src/app.module';
-import { PrismaService } from '../src/prisma/prisma.service';
+import PrismaService from '../src/prisma/prisma.service';
 import { SigninDto, SignupDto } from '../src/auth/dto';
 import { editUser } from '../src/user/dto/editUser.dto';
 import {
