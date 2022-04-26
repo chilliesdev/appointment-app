@@ -3,12 +3,11 @@ import { INestApplication } from '@nestjs/common';
 import * as pactum from 'pactum';
 import { AppModule } from './../src/app.module';
 import PrismaService from '../src/prisma/prisma.service';
-import { SigninDto, SignupDto } from '../src/auth/dto';
-import { editUser } from '../src/user/dto/editUser.dto';
-import {
-  CreateAppointmentDto,
-  EditAppointmentDto,
-} from '../src/appointment/dto';
+import SigninDto from '../src/auth/dto/signin.dto';
+import SignupDto from '../src/auth/dto/signup.dto';
+import editUser from '../src/user/dto/editUser.dto';
+import CreateAppointmentDto from '../src/appointment/dto/create-appointment.dto';
+import EditAppointmentDto from '../src/appointment/dto/edit-appointment.dto';
 
 describe('AppController (e2e)', () => {
   let app: INestApplication;
