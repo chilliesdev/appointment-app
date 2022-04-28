@@ -36,7 +36,7 @@ export default function View({
         <SubHeading>Title</SubHeading>
         <Text>{createInfo?.title}</Text>
         <SubHeading>Date</SubHeading>
-        <Text>{new Date(end).toLocaleDateString()}</Text>
+        <Text>{new Date(start).toLocaleDateString()}</Text>
         <SubHeading>Time</SubHeading>
         <Text>{`${new Date(start).toLocaleTimeString()}`}</Text>
         <SubHeading>Duration</SubHeading>
