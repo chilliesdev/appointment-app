@@ -1,12 +1,21 @@
+import { MailerService } from '@nestjs-modules/mailer';
 import { ForbiddenException, Injectable, Logger } from '@nestjs/common';
-import { Cron, CronExpression } from '@nestjs/schedule';
+import { ConfigService } from '@nestjs/config';
+import { Cron, CronExpression, SchedulerRegistry } from '@nestjs/schedule';
+import { Appointment, User } from '@prisma/client';
+import { CronJob } from 'cron';
 import PrismaService from '../prisma/prisma.service';
 import CreateAppointmentDto from './dto/create-appointment.dto';
 import EditAppointmentDto from './dto/edit-appointment.dto';
 
 @Injectable()
 export class AppointmentService {
-  constructor(private prisma: PrismaService) {}
+  constructor(
+    private prisma: PrismaService,
+    private schedulerRegistry: SchedulerRegistry,
+    private mailerService: MailerService,
+    private config: ConfigService,
+  ) {}
 
   private readonly logger = new Logger(AppointmentService.name);
 
@@ -27,13 +36,35 @@ export class AppointmentService {
     });
   }
 
-  createAppointment(userId: number, dto: CreateAppointmentDto) {
-    return this.prisma.appointment.create({
+  async createAppointment(user: User, dto: CreateAppointmentDto) {
+    const appointment = await this.prisma.appointment.create({
       data: {
-        hostId: userId,
+        hostId: user.id,
         ...dto,
       },
+      include: {
+        guest: true,
+        host: true,
+      },
     });
+
+    const startTime = new Date(appointment.start);
+    const reminderTime = new Date(
+      startTime.valueOf() - this.config.get('REMINDER_TIME') * 60000,
+    );
+
+    this.addCronJob(
+      `schedule-reminder-mail-job-${appointment.id}`,
+      reminderTime,
+      async () => {
+        // Send Host Mail
+        this.sendReminderMail(appointment.host, appointment);
+        // Send Guest Mail
+        this.sendReminderMail(appointment.guest, appointment);
+      },
+    );
+
+    return appointment;
   }
 
   async editAppointment(
@@ -79,8 +110,51 @@ export class AppointmentService {
     });
   }
 
-  @Cron(CronExpression.EVERY_30_SECONDS)
-  sendReminderEmail() {
-    this.logger.debug('Email Sent Every Second');
+  addCronJob(name: string, date: Date, callback: () => Promise<void>) {
+    // convert date timezone to machine timezone
+    const timezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+    const formatedDate = date.toLocaleString('en-US', {
+      timeZone: timezone,
+    });
+
+    try {
+      const job = new CronJob(new Date(formatedDate), callback);
+
+      this.schedulerRegistry.addCronJob(name, job);
+      job.start();
+      this.logger.warn(`job ${name} added for ${date}!`);
+    } catch (error) {
+      this.logger.error(error);
+    }
+  }
+
+  async sendReminderMail(user: User, appointment: Appointment) {
+    const duration = (start: Date, end: Date): number => {
+      const difference = new Date(end).valueOf() - new Date(start).valueOf();
+      const minutes = Math.round(difference / 60000);
+      return minutes;
+    };
+
+    try {
+      await this.mailerService.sendMail({
+        to: user.email,
+        // from: '"Support Team" <support@example.com>', // override default from
+        subject: 'Appointment Reminder',
+        template: 'appointmentReminder', // `.hbs` extension is appended automatically
+        context: {
+          title: appointment.title,
+          host: user.name,
+          hostEmail: user.email,
+          date: new Date(appointment.start).toLocaleDateString(),
+          time: new Date(appointment.start).toLocaleTimeString(),
+          duration: appointment.allDay
+            ? 'All day appointment'
+            : duration(appointment.start, appointment.end),
+          description: appointment.description,
+        },
+      });
+    } catch (error) {
+      this.logger.error(error);
+    }
   }
 }

@@ -9,6 +9,7 @@ import {
   Post,
   UseGuards,
 } from '@nestjs/common';
+import { User } from '@prisma/client';
 import GetUser from '../auth/decorator/get-user.decorator';
 import JwtGuard from '../auth/guard/jwt.guard';
 import { AppointmentService } from './appointment.service';
@@ -34,11 +35,8 @@ export class AppointmentController {
   }
 
   @Post()
-  createAppointment(
-    @GetUser('id') userId: number,
-    @Body() dto: CreateAppointmentDto,
-  ) {
-    return this.appointmentService.createAppointment(userId, dto);
+  createAppointment(@GetUser() user: User, @Body() dto: CreateAppointmentDto) {
+    return this.appointmentService.createAppointment(user, dto);
   }
 
   @Patch(':id')
