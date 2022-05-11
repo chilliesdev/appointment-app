@@ -29,6 +29,7 @@
     "@nestjs/passport": "^8.2.1",
     "@nestjs/platform-express": "^8.4.4",
     "@nestjs/schedule": "^1.1.0",
+    "@nestjs/cli": "^8.2.5",
     "@prisma/client": "^3.14.0",
     "@types/cron": "^1.7.3",
     "argon2": "^0.28.5",
