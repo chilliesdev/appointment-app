@@ -11,7 +11,7 @@ async function bootstrap() {
         whitelist: true,
     }));
     app.enableCors();
-    await app.listen(8000);
+    await app.listen(process.env.PORT || 8000);
 }
 bootstrap();
 //# sourceMappingURL=main.js.map
