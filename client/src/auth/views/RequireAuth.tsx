@@ -20,7 +20,7 @@ export default function RequireAuth({ children }: { children: JSX.Element }) {
         console.log(error);
         dispatch(logout());
       });
-  }, [accessToken]);
+  }, [accessToken, dispatch, getUser]);
 
   if (!accessToken) {
     // Redirect them to the /login page, but save the current location they were
