@@ -1,7 +1,5 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
-import { SigninInput, SignupInput } from "../auth/types";
-import { GoogleSignin } from "../auth/types/GoogleSignin.type";
-import { useAppSelector } from "../redux/hooks";
+import { SigninInput, SignupInput, GoogleSignin } from "../auth/types";
 
 export const fetchSignUp = createAsyncThunk(
   "auth/signUp",
