@@ -1,8 +1,9 @@
-import { useEffect } from "react";
-import { useLocation, Navigate } from "react-router-dom";
-import { useGetUser } from "../../hooks";
-import { useAppDispatch, useAppSelector } from "../../redux/hooks";
-import { logout, setUserData } from "../authSlice";
+import { useState, useEffect } from 'react';
+import { useLocation, Navigate } from 'react-router-dom';
+import { useGetUser } from '../../hooks';
+import { useAppDispatch, useAppSelector } from '../../redux/hooks';
+import { logout, setUserData } from '../authSlice';
+import { LoadingScreen } from '../../components';
 
 export default function RequireAuth({ children }: { children: JSX.Element }) {
   let location = useLocation();
@@ -11,13 +12,16 @@ export default function RequireAuth({ children }: { children: JSX.Element }) {
 
   const getUser = useGetUser;
 
+  const [loading, setLoading] = useState(true);
+
   useEffect(() => {
     getUser()
       .then((response) => {
+        setLoading(false);
         dispatch(setUserData(response));
       })
-      .catch((error) => {
-        console.log(error);
+      .catch(() => {
+        setLoading(false);
         dispatch(logout());
       });
   }, [accessToken, dispatch, getUser]);
@@ -30,5 +34,5 @@ export default function RequireAuth({ children }: { children: JSX.Element }) {
     return <Navigate to="/signin" state={{ from: location }} replace />;
   }
 
-  return children;
+  return loading ? <LoadingScreen /> : children;
 }

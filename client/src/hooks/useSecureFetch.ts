@@ -1,14 +1,14 @@
-import { Http2ServerRequest, Http2ServerResponse } from "http2";
-import { SuggestionsDataType } from "../components/types";
-import { store } from "../redux/store";
-import { AppointmentTypes, UserTypes } from "./types/secureFetch.type";
+import { Http2ServerRequest, Http2ServerResponse } from 'http2';
+import { SuggestionsDataType } from '../components/types';
+import { store } from '../redux/store';
+import { AppointmentTypes, UserTypes } from './types/secureFetch.type';
 
 export const usePostAppointment = async (data: AppointmentTypes) => {
   const state = await store.getState();
 
   const accessToken = state.authState.accessToken;
 
-  return secureFetch("POST", "/appointment", accessToken, data);
+  return secureFetch('POST', '/appointment', accessToken, data);
 };
 
 export const useGetAppointment = async (): Promise<AppointmentTypes[]> => {
@@ -16,7 +16,7 @@ export const useGetAppointment = async (): Promise<AppointmentTypes[]> => {
 
   const accessToken = state.authState.accessToken;
 
-  return secureFetch("GET", "/appointment", accessToken);
+  return secureFetch('GET', '/appointment', accessToken);
 };
 
 export const useFilterUsers = async (data: {
@@ -28,9 +28,9 @@ export const useFilterUsers = async (data: {
   const accessToken = state.authState.accessToken;
 
   return secureFetch(
-    "GET",
-    "/user/filter/?" + new URLSearchParams(data),
-    accessToken
+    'GET',
+    '/user/filter/?' + new URLSearchParams(data),
+    accessToken,
   );
 };
 
@@ -39,7 +39,7 @@ export const useEditUser = async (data: UserTypes): Promise<unknown> => {
 
   const accessToken = state.authState.accessToken;
 
-  return await secureFetch("PATCH", "/user", accessToken, data);
+  return await secureFetch('PATCH', '/user', accessToken, data);
 };
 
 export const useGetUser = async (): Promise<{
@@ -51,20 +51,20 @@ export const useGetUser = async (): Promise<{
 
   const accessToken = state.authState.accessToken;
 
-  return await secureFetch("GET", "/user", accessToken);
+  return await secureFetch('GET', '/user', accessToken);
 };
 
 async function secureFetch(
   method: string,
   url: string,
   accessToken: string | null,
-  body?: any
+  body?: any,
 ) {
   const serverUrl: string = process.env.REACT_APP_SERVER_URL!;
   let headers = new Headers();
-  headers.append("Authorization", `Bearer ${accessToken}`);
-  headers.append("Content-Type", "application/json");
-  headers.append("Accept", "application/json");
+  headers.append('Authorization', `Bearer ${accessToken}`);
+  headers.append('Content-Type', 'application/json');
+  headers.append('Accept', 'application/json');
 
   let request: RequestInit | undefined = {
     method,
@@ -75,9 +75,17 @@ async function secureFetch(
   try {
     const response = await fetch(serverUrl + url, request);
 
+    if (!response.ok)
+      throw Error(
+        `{"statusCode": ${response.status}, "message": ${response.statusText}}`,
+      );
+
     return await response.json();
   } catch (error) {
-    console.error(error);
-    throw new Error("Server Error");
+    // console.log('secureFetch:', error);
+    // if(error instanceof Error) throw error
+    throw error;
+
+    // throw new Error('Server Error');
   }
 }

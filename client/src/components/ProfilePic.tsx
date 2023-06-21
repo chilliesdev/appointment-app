@@ -1,17 +1,17 @@
-import { useEffect, useState } from "react";
-import { useAppSelector } from "../redux/hooks";
+import { useEffect, useState } from 'react';
+import { useAppSelector } from '../redux/hooks';
 
 export default function ProfilePic(
   props: React.DetailedHTMLProps<
     React.ImgHTMLAttributes<HTMLImageElement>,
     HTMLImageElement
-  >
+  >,
 ) {
   const user = useAppSelector((state) => state.authState.user);
-  const [fullName, setFullName] = useState("");
+  const [fullName, setFullName] = useState('');
 
   useEffect(() => {
-    setFullName(user ? user?.name.replace(/ /g, "+") : "");
+    if (user && user.email) setFullName(user.name.replace(/ /g, '+'));
   }, [user]);
 
   return (
@@ -22,7 +22,7 @@ export default function ProfilePic(
       src={
         user
           ? `https://ui-avatars.com/api/?name=${fullName}&background=random&rounded=true`
-          : ""
+          : ''
       }
     />
   );

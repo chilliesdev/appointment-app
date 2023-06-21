@@ -1,6 +1,6 @@
 import { ExtractJwt, Strategy } from 'passport-jwt';
 import { PassportStrategy } from '@nestjs/passport';
-import { Injectable } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 
 import PrismaService from '../../prisma/prisma.service';
@@ -21,6 +21,8 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
         id: payload.sub,
       },
     });
+
+    if (!user) throw new HttpException('User not found', HttpStatus.NOT_FOUND);
 
     delete user.hash;
     return user;
