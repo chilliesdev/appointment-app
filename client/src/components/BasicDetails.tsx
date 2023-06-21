@@ -1,13 +1,15 @@
-import { useEffect } from "react";
-import { useForm, Controller, SubmitHandler } from "react-hook-form";
-import { AutoCompleteInput, Button, Input, RichTextInput } from "../components";
-import { CreateInputForm, SetFormProps } from "./types";
+import { useEffect } from 'react';
+import { useForm, Controller, SubmitHandler } from 'react-hook-form';
+import { AutoCompleteInput, Button, Input, RichTextInput } from '../components';
+import { CreateInputForm, SetFormProps } from './types';
+import { EditorState, convertToRaw } from 'draft-js';
+import draftToHtml from 'draftjs-to-html';
 
 interface CreateProps {
   setCreateInfo: React.Dispatch<
     React.SetStateAction<CreateInputForm | undefined>
   >;
-  setForm: React.Dispatch<React.SetStateAction<SetFormProps["T"]>>;
+  setForm: React.Dispatch<React.SetStateAction<SetFormProps['T']>>;
   createInfo: CreateInputForm | undefined;
 }
 
@@ -27,7 +29,7 @@ export default function Create({
 
   const onSubtmit: SubmitHandler<CreateInputForm> = (data) => {
     setCreateInfo(data);
-    setForm("calendar");
+    setForm('calendar');
   };
 
   useEffect(() => {
@@ -42,7 +44,7 @@ export default function Create({
         placeholder="Appointment Name"
         id="title"
         error={errors.title && errors.title.message}
-        {...register("title", {
+        {...register('title', {
           required: true,
         })}
       />
@@ -55,21 +57,20 @@ export default function Create({
         id="guest"
         resetField={reset}
         error={errors.guest && errors.guest.message}
-        {...register("guest", {
+        {...register('guest', {
           required: true,
         })}
       />
       <Controller
         control={control}
         name="description"
-        render={({ field: { value, onChange, ref } }) => (
+        render={({ field: { value, onChange } }) => (
           <RichTextInput
             label="Description"
             name="description"
             initialValue="<p>Describe your appointment</p>"
             onChange={onChange}
             value={value}
-            ref={ref}
           />
         )}
       />

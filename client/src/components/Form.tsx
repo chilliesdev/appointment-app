@@ -1,18 +1,12 @@
-import { SubmitHandler, UseFormReturn, useForm } from "react-hook-form";
+import { FormEventHandler } from 'react';
 
-type FormProps<TFormValues> = {
-  onSubmit: SubmitHandler<TFormValues>;
-  children: (methods: UseFormReturn<TFormValues>) => React.ReactNode;
+type FormProps = {
+  onSubmit: FormEventHandler<HTMLFormElement>;
+  children: React.ReactNode;
 };
 
-const Form = <TFormValues extends Record<string, any> = Record<string, any>>({
-  onSubmit,
-  children,
-}: FormProps<TFormValues>) => {
-  const methods = useForm<TFormValues>();
-  return (
-    <form onSubmit={methods.handleSubmit(onSubmit)}>{children(methods)}</form>
-  );
+const Form = ({ onSubmit, children }: FormProps) => {
+  return <form onSubmit={onSubmit}>{children}</form>;
 };
 
 export default Form;
