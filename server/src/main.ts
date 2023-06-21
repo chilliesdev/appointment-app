@@ -14,9 +14,9 @@ async function bootstrap() {
   );
   app.enableCors();
 
-  // Clear DB
-  // const prisma = app.get(PrismaService);
-  // await prisma.cleanDb();
+  // Connect to DB
+  const prisma = app.get(PrismaService);
+  await prisma.$connect();
 
   await app.listen(process.env.PORT || 8000);
 }
