@@ -1,0 +1,26 @@
+{
+  "name": "appointment-app",
+  "version": "1.0.0",
+  "description": "An appointmentp-app is a software used by individuals to streamline their service appointments. By using the app, users can know and choose their preferred appointment times according to the available time slots.",
+  "main": ".eslintrc.js",
+  "scripts": {
+    "start": "concurrently --kill-others \"yarn start:client\" \"yarn start:server\"",
+    "start:client": "cd client && yarn && yarn start",
+    "start:server": "cd server && yarn && prisma migrate deploy && yarn start",
+    "dev": "concurrently --kill-others \"yarn dev:client\" \"yarn dev:server\"",
+    "dev:client": "cd client && yarn start",
+    "dev:server": "cd server && yarn start:dev",
+    "prestart": "node generate-env.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/chilliesdev/appointment-app.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/chilliesdev/appointment-app/issues"
+  },
+  "homepage": "https://github.com/chilliesdev/appointment-app#readme"
+}
