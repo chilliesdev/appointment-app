@@ -39,7 +39,7 @@ An appointmentp-app is a software used by individuals to streamline their servic
 
 ### Demo Account
 
-- **Email**: `Tyrese_Kihn@gmail.com`
+- **Email**: `Beulah_Metz90@hotmail.com`
 - **Password**: `password`
 
 ### Built With
@@ -56,6 +56,7 @@ An appointmentp-app is a software used by individuals to streamline their servic
 - Prisma ORM
 - Jest
 - Pactum
+- Docker
 
 ## Getting Started
 
