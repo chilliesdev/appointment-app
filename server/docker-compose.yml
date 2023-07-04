@@ -1,0 +1,13 @@
+version: '3.8'
+services:
+  app:
+    container_name: appointment_app_server
+    # restart: always
+    env_file: ./.env
+    build:
+      context: .
+    image: 'appointment_app_server:04072023'
+    ports:
+      - '8000:8000'
+    stdin_open: true
+    tty: true
